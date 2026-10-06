@@ -11,7 +11,8 @@ import { fileURLToPath } from 'url';
 const app=express();app.use(cors());app.use(express.json());
 const http=createServer(app);const io=new Server(http,{cors:{origin:'*'}});
 const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:8*1024*1024}});
-const AI_URL=(process.env.AI_URL||'http://localhost:8000').replace(/\/$/,'');
+const rawAI=(process.env.AI_URL||'http://localhost:8000').replace(/\/$/,'');
+const AI_URL=/^https?:\/\//.test(rawAI)?rawAI:`http://${rawAI}`;
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
 
 let dbReady=false;
